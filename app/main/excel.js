@@ -25,6 +25,8 @@ exports.excelWriteFile = (filePath, name) => {
   workbook.xlsx.readFile(filePath).then(function() {
     const worksheet = workbook.getWorksheet("Hoja1");
     console.log(worksheet.id);
+    
+    worksheet.spliceColumns(5,3);
     //workbook.removeWorksheet(worksheet.id);
     return workbook.xlsx.writeFile(fileName)
   }).catch();
