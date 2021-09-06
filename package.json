@@ -1,0 +1,24 @@
+{
+  "name": "electron",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app/index.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^13.1.9"
+  },
+  "dependencies": {
+    "axios": "^0.21.1",
+    "chokidar": "^3.5.2",
+    "drag-drop": "^7.2.0",
+    "fs-extra": "^8.1.0",
+    "open": "^8.2.1",
+    "sharp": "^0.28.3",
+    "xlsx": "^0.17.1"
+  }
+}
