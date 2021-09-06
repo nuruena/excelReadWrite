@@ -88,7 +88,7 @@ ipcMain.on( 'app:on-file-open', ( event, file ) => {
 ipcMain.on( 'app:on-excel-read-write', ( event, file ) => {
     let name = path.parse( file.filepath ).base.split('.')[0];
     let xlsData = excel.excelReadFile(file.filepath);
-    let resolvedExcelDir = excel.excelWriteFile(xlsData);
+    let resolvedExcelDir = excel.excelWriteFile(xlsData, name);
     io.excelReadWrite( resolvedExcelDir, name );
 } );
 

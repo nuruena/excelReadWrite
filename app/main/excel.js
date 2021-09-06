@@ -31,16 +31,29 @@ exports.excelReadFile = (path) => {
 };
 
 //Write excel file
-exports.excelWriteFile = (data) => {
+exports.excelWriteFile = (data, name) => {
+
   fs.ensureDirSync(resolvedExcelDir);
   
-  reader.utils.book_new();
+  let fileName = resolvedExcelDir + '\\' + name + + new Date().toISOString().substring(0, 10) + '.xls';
+
+  try {
+    fs.utimesSync(fileName, new Date(), new Date());
+  }
+  catch (err){
+    fs.closeSync(fs.openSync(fileName,'w'));
+  }
+
+  let file = reader.readFile(fileName);
+
+
+  //reader.utils.book_new();
   
-  //const write = reader.utils.json_to_sheet(data);
+  const write = reader.utils.json_to_sheet(data);
 
-  //reader.utils.book_append_sheet();
+  reader.utils.book_append_sheet(file, write, "Sheet1");
 
-  //reader.writeFile();
+  reader.writeFile(file, fileName);
 
   return resolvedExcelDir;
 };
