@@ -8,8 +8,8 @@ const excel = require( './main/excel' );
 // open a window
 const openWindow = () => {
     const win = new BrowserWindow( {
-        width: 800,
-        height: 500,
+        width: 1024,
+        height: 768,
         webPreferences: {
             nodeIntegration: true,
             contextIsolation: false,
@@ -27,7 +27,7 @@ const openWindow = () => {
 // when app is ready, open a window
 app.on( 'ready', () => {
     const win = openWindow();
-
+    console.log(process.version);
     // watch files
     io.watchFiles( win );
 } );
@@ -90,7 +90,7 @@ ipcMain.on( 'app:on-file-open', ( event, file ) => {
 } );
 
 // listen to file excel manipulation
-ipcMain.on( 'app:on-excel-read-write', ( event, file ) => {
+ipcMain.handle( 'app:on-excel-read-write', ( event, file ) => {
     let name = path.parse( file.filepath ).base.split('.')[0];
     let extension = path.parse( file.filepath ).base.split('.')[1];
     //let xlsData = excel.excelReadFile(file.filepath);

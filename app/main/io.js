@@ -44,7 +44,7 @@ exports.getProcessedFiles = () => {
     const filesProcessed = fs.readdirSync( resolvedExcelDir );
 
     return filesProcessed.map( filename => {
-        const filePath = path.resolve( appDir, filename );
+        const filePath = path.resolve( resolvedExcelDir, filename );
         const fileStats = fs.statSync( filePath );
 
         return {

@@ -61,7 +61,7 @@ body {
 }
 .app__files {
   flex: 0 0 auto;
-  width: 49vw;
+  width: 50vw;
   height: 50vh;
   background-color: #ddd;
   padding: 20px;
@@ -72,7 +72,7 @@ body {
   flex: 0 0 auto;
   width: 50vw;
   height: 50vh;
-  background-color: #666;
+  background-color: #aaa;
   padding: 20px;
   overflow-x: hidden;
   overflow-y: auto; }

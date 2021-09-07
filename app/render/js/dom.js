@@ -31,7 +31,11 @@ window.excelReadWrite = function ( itemId ) {
     const filepath = itemNode.getAttribute( 'data-filepath' );
 
     // send event to the main thread
-    ipcRenderer.send( 'app:on-excel-read-write', { id: itemId, filepath} );
+    ipcRenderer.invoke( 'app:on-excel-read-write', { id: itemId, filepath} ).then( () => {
+        ipcRenderer.invoke( 'app:get-processed-files' ).then( ( files = [] ) => {
+            displayProcessedFiles(files);
+        } );
+    } );
 };
 
 // open file
@@ -48,7 +52,7 @@ window.openFile = function ( itemId ) {
 exports.displayFiles = ( files = [] ) => {
     const fileListElem = document.getElementById( 'filelist' );
     fileListElem.innerHTML = '';
-
+    console.log("pase");
     files.forEach( file => {
         const itemDomElem = document.createElement( 'div' );
         itemDomElem.setAttribute( 'id', file.name ); // set `id` attribute
@@ -63,7 +67,32 @@ exports.displayFiles = ( files = [] ) => {
             </div>
             <img onclick='deleteFile("${ file.name }")' src='../assets/delete.svg' class='app__files__item__delete'/>&nbsp;&nbsp;&nbsp;
             <img onclick='excelReadWrite("${ file.name }")' src='../assets/excel.svg' class='app__files__item__delete'/>
+            &nbsp;&nbsp;&nbsp;
+            <img onclick='excelRW("${ file.name }")' src='../assets/excel.svg' class='app__files__item__delete'/>
             <img onclick='openFile("${ file.name }")' src='../assets/open.svg' class='app__files__item__open'/>
+        `;
+
+        fileListElem.appendChild( itemDomElem );
+    } );
+};
+
+exports.displayProcessedFiles = ( files = [] ) => {
+    const fileListElem = document.getElementById( 'processedfilelist' );
+    fileListElem.innerHTML = '';
+
+    files.forEach( file => {
+        const itemDomElem = document.createElement( 'div' );
+        itemDomElem.setAttribute( 'id', file.name ); // set `id` attribute
+        itemDomElem.setAttribute( 'class', 'app__files__item' ); // set `class` attribute
+        itemDomElem.setAttribute( 'data-filepath', file.path ); // set `data-filepath` attribute
+
+        itemDomElem.innerHTML = `
+            <img ondragstart='copyFile(event, "${ file.name }")' src='../assets/document.svg' class='app__files__item__file'/>
+            <div class='app__files__item__info'>
+                <p class='app__files__item__info__name'>${ file.name }</p>
+                <p class='app__files__item__info__size'>${ file.size }KB</p>
+            </div>
+            <img onclick='openFile("${ file.name }")' src='../assets/correo-electronico.svg' class='app__files__item__open'/>
         `;
 
         fileListElem.appendChild( itemDomElem );

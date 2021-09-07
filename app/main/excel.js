@@ -40,16 +40,17 @@ exports.excelWriteFile = (filePath, name, extension) => {
   workbook.xlsx
     .readFile(filePath)
     .then(function () {
-      const worksheet = workbook.getWorksheet("Hoja1");
+      const worksheet = workbook.getWorksheet("Hoja1") ? workbook.getWorksheet("Hoja1") : workbook.getWorksheet("Sheet1");
       console.log(worksheet.id);
       const colNames = ["CANT", "ISBN", "COD", "TITULO"];
       worksheet.spliceRows(10, 0, colNames);
       var endRow = worksheet.rowCount;
       worksheet.getCell(`A${endRow + 1 }`).value = { formula: `SUM(A11:A${endRow})` };
-      worksheet.spliceRows(endRow+2 , 0, ["Totales","","Sin reposición"])
-      worksheet.spliceRows(endRow+3 , 0, ["","","Facturar a precio viejo"])
+      worksheet.spliceRows(endRow+2 , 0, ["Totales","","","Sin reposición"])
+      worksheet.spliceRows(endRow+3 , 0, ["","","","Facturar a precio viejo"])
 
       //workbook.removeWorksheet(worksheet.id);
+      worksheet.columns = [ { width: 15 }, { width: 20 }, { width: 15 }, { width: 45 }];
       worksheet.columns.forEach(col => {
         col.eachCell(cell => {
         if (cell) {
@@ -62,7 +63,7 @@ exports.excelWriteFile = (filePath, name, extension) => {
         }
       })});
       worksheet.spliceColumns(5, 10);
-      
+      worksheet.spliceColumns(0, 0);
       return workbook.xlsx.writeFile(fileName);
     })
     .catch();
