@@ -11,6 +11,14 @@ const notification = require( './notification' );
 // get application directory
 const appDir = path.resolve( os.homedir(), 'electron-app-files' ) + '\\data';
 
+//Resolved Excel directory
+var time = new Date();
+const resolvedExcelDir =
+  path.resolve(os.homedir(), "electron-app-files") +
+  "\\liquidaciones\\" +
+  time.toISOString().substring(0, 7);
+
+
 /****************************/
 
 // get the list of files
@@ -18,6 +26,24 @@ exports.getFiles = () => {
     const files = fs.readdirSync( appDir );
 
     return files.map( filename => {
+        const filePath = path.resolve( appDir, filename );
+        const fileStats = fs.statSync( filePath );
+
+        return {
+            name: filename,
+            path: filePath,
+            size: Number( fileStats.size / 1000 ).toFixed( 1 ), // kb
+        };
+    } );
+};
+
+/****************************/
+
+// get the list of processed files
+exports.getProcessedFiles = () => {
+    const filesProcessed = fs.readdirSync( resolvedExcelDir );
+
+    return filesProcessed.map( filename => {
         const filePath = path.resolve( appDir, filename );
         const fileStats = fs.statSync( filePath );
 

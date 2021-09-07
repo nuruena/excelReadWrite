@@ -53,6 +53,11 @@ ipcMain.handle( 'app:get-files', () => {
     return io.getFiles();
 } );
 
+// return list of processed files
+ipcMain.handle( 'app:get-processed-files', () => {
+    return io.getProcessedFiles();
+} );
+
 // listen to file(s) add event
 ipcMain.handle( 'app:on-file-add', ( event, files = [] ) => {
     io.addFiles( files );
@@ -87,8 +92,9 @@ ipcMain.on( 'app:on-file-open', ( event, file ) => {
 // listen to file excel manipulation
 ipcMain.on( 'app:on-excel-read-write', ( event, file ) => {
     let name = path.parse( file.filepath ).base.split('.')[0];
+    let extension = path.parse( file.filepath ).base.split('.')[1];
     //let xlsData = excel.excelReadFile(file.filepath);
-    let resolvedExcelDir = excel.excelWriteFile( file.filepath,name );
+    let resolvedExcelDir = excel.excelWriteFile( file.filepath, name, extension );
     io.excelReadWrite( resolvedExcelDir, name );
 } );
 
